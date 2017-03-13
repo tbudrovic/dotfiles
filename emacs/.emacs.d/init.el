@@ -1,5 +1,6 @@
 ;; package managers
 
+;;; code
 (require 'package)
 
 (setq package-archives nil)
@@ -142,11 +143,6 @@ PACKAGES list of packages to install"
   (global-linum-mode t)
   (linum-relative-mode))
 
-(use-package ace-window
-  :ensure t
-  :config
-  (global-set-key (kbd "C-x o") 'ace-window))
-
 (use-package ace-jump-mode
   :ensure t
   :config
@@ -160,34 +156,55 @@ PACKAGES list of packages to install"
   :config
   (frames-only-mode))
 
-
 ;; (use-package sr-speedbar
-;;   :ensure t
+;   :ensure t
 ;;   :init
 ;;   (setq speedbar-use-images nil)
 ;;   (setq sr-speedbar-right-side nil)
 ;;   :config
 ;;   (sr-speedbar-open))
 
-(use-package naquadah-theme
-  :ensure t
+(use-package solarized
+  :disabled t
+  :if (window-system)
+  :defer t
+  :init (load-theme 'solarized-dark 'no-confirm)
   :config
-  (load-theme 'naquadah t))
+  (progn
+    ;; As of 20140313: avoid underlining the modeline
+    (set-face-attribute 'mode-line nil :underline nil)
+    (set-face-attribute 'mode-line-inactive nil :underline nil)
+
+    ;; Nicer trailing whitespace indication
+    (set-face-attribute 'trailing-whitespace nil
+			:background
+			(face-attribute 'warning :foreground)))
+
+  ;; Fix solarized linum background
+  (add-hook 'linum-before-numbering-hook
+	    (lambda ()
+	      (set-face-attribute
+	       'linum nil :background
+	       (face-attribute 'header-line  :background)))))
+
+(provide 'init)
+
+;;; init.el ends here
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (ace-jump-mode ace-window which-key use-package frames-only-mode rust-mode tuareg flycheck-ocaml web-mode sr-speedbar spaceline sass-mode ruby-compilation rhtml-mode popup org-bullets naquadah-theme log4e linum-relative jump js2-mode ht haskell-mode gntp flymake-jslint flymake-jshint flymake-haskell-multi flycheck-pos-tip evil elm-mode))))
+    (ace-jump-mode which-key use-package frames-only-mode rust-mode flycheck-ocaml web-mode spaceline sass-mode ruby-compilation rhtml-mode popup org-bullets log4e linum-relative jump js2-mode ht gntp flymake-jslint flymake-jshint flycheck-pos-tip evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-(provide 'init)
-;;; init.el ends here
