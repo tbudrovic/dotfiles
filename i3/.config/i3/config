@@ -1,19 +1,19 @@
-set $base00 #101218
-set $base01 #1f222d
-set $base02 #252936
-set $base03 #7780a1
-set $base04 #C0C5CE
-set $base05 #d1d4e0
-set $base06 #C9CCDB
-set $base07 #ffffff
-set $base08 #ee829f
-set $base09 #f99170
-set $base0A #ffefcc
-set $base0B #a5ffe1
-set $base0C #97e0ff
-set $base0D #97bbf7
-set $base0E #c0b7f9
-set $base0F #fcc09e
+set $base03        #002b36
+set $base02        #073642
+set $base01        #586e75
+set $base00        #657b83
+set $base0         #839496
+set $base1         #93a1a1
+set $base2         #eee8d5
+set $base3         #fdf6e3
+set $yellow        #b58900
+set $orange        #cb4b16
+set $red           #dc322f
+set $magenta       #d33682
+set $violet        #6c71c4
+set $blue          #268bd2
+set $cyan          #2aa198
+set $green         #859900
 
 set $workspace1 "1: "
 set $workspace2 "2: "
@@ -28,7 +28,7 @@ set $workspace9 "9: "
 
 set $mod Mod4
 
-font pango:System San Francisco Display 9
+font pango:Hack Bold 10
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -82,10 +82,10 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+q focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+bindsym $mod+a focus child
 
 # switch to workspace
 bindsym $mod+1 workspace $workspace1
@@ -118,10 +118,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        bindsym h resize grow width 5 px or 5 ppt
+        bindsym l resize grow width 5 px or 5 ppt
         bindsym j resize shrink height 5 px or 5 ppt
         bindsym k resize grow height 5 px or 5 ppt
-        bindsym l resize shrink width 5 px or 5 ppt
+        bindsym h resize shrink width 5 px or 5 ppt
 
         bindsym Escape mode "default"
 	bindsym q mode "default"
@@ -137,29 +137,29 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 # finds out, if available)
 
 bar {
-  font pango: System San Francisco Display 11, FontAwesome 11
+  font pango: Hack Bold 11, FontAwesome 11
   status_command i3blocks -c ~/.config/i3/i3blocks.conf
   position top
 
   colors {
-    separator $base03
-    background $base01
-    statusline $base05
+    separator  $base01
+    background $base02
+    statusline $base01
 #                      border  background text
-    focused_workspace  $base01 $base01    $base07
-    active_workspace   $base01 $base02    $base03
-    inactive_workspace $base01 $base01    $base03
-    urgent_workspace   $base01 $base01    $base08
+    focused_workspace  $base02 $base02    $yellow
+    active_workspace   $base02 $base02    $base0
+    inactive_workspace $base02 $base02    $base1
+    urgent_workspace   $base02 $base02    $red
   }
 }
 
 #smart_borders on
-hide_edge_borders both
+hide_edge_borders smart
 
-client.focused          $base01 $base01    $base07 $base0F
-client.focused_inactive $base02 $base02    $base03 $base0F
-client.unfocused        $base02 $base02    $base03 $base0F
-client.urgent           $base02 $base08    $base00 $base0F
+client.focused          $base0  $base0  $base02 $violet
+client.focused_inactive $base01 $base01 $base0  $violet
+client.unfocused        $base02 $base02 $base0  $violet
+client.urgent           $base0  $base0  $red    $violet
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable

@@ -1,28 +1,3 @@
-URxvt*depth:		32
-!URxvt*foreground:	white
-!URxvt*background:	[85]#000000
-URxvt*scrollBar:	false
-URxvt*font:		xft:Hack:size=10
-URxvt*letterSpace:	-1
-URxvt*iso14755:		false
-URxvt*cursorBlink:	true
-URxvt*cursorUnderline:	true
-
-rofi.color-enabled:	true
-rofi.color-normal:	argb:0000000, #a2b5df, argb:3affffff, #a2b5df, #02143f
-rofi.color-urgent:	argb:0000000, #ff817f, argb:3affffff, #ff817f, #02143f
-rofi.color-active:	argb:0000000, #6aa4ff, argb:3affffff, #6aa4ff, #02143f
-rofi.color-window:	argb:ee02143f, #a2b5df, #a2b5df
-rofi.separator-style:	solid
-rofi.lines:		5
-rofi.fullscreen:	true
-rofi.padding:		300
-!rofi.font:		"System San Francisco Display 9"
-rofi.hide-scrollbar:	true
-rofi.line-margin:	10
-rofi.eh:		2
-rofi.bw:		0
-
 !! drop in Solarized colorscheme for Xresources/Xdefaults
 
 !!SOLARIZED HEX     16/8 TERMCOL  XTERM/HEX   L*A*B      RGB         HSB
@@ -62,9 +37,7 @@ rofi.bw:		0
 #define S_green         #859900
 
 *background:            S_base03
-*foreground:            S_base00
-*fading:                40
-*fadeColor:             S_base03
+*foreground:            S_base0
 *cursorColor:           S_base1
 *pointerColorBackground:S_base01
 *pointerColorForeground:S_base1
@@ -100,3 +73,27 @@ rofi.bw:		0
 !! white dark/light
 *color7:                S_base2
 *color15:               S_base3
+
+URxvt*depth:		32
+URxvt*scrollBar:	false
+URxvt*font:		xft:Hack:size=10
+URxvt*letterSpace:	-1
+URxvt*iso14755:		false
+URxvt*cursorBlink:	true
+URxvt*cursorUnderline:	true
+
+rofi.color-enabled:	true
+rofi.color-window:      S_base03, S_base03, S_base03
+rofi.color-normal:      S_base03, S_base0,  S_base03, S_base2, S_base01
+rofi.color-active:      S_base03, S_green,  S_base03, S_base2, S_green
+rofi.color-urgent:      S_base03, S_red,    S_base03, S_base2, S_red
+rofi.separator-style:	solid
+rofi.sidebar-mode:      true
+rofi.fullscreen:	true
+rofi.padding:		300
+rofi.font:		Hack 12
+rofi.hide-scrollbar:	true
+rofi.line-margin:	15
+rofi.eh:		1
+rofi.bw:		0
+rofi.terminal:          urxvtc
