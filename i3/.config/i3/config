@@ -142,9 +142,9 @@ bar {
   position top
 
   colors {
-    separator  $base01
     background $base02
-    statusline $base01
+    separator  $base0
+    statusline $base0
 #                      border  background text
     focused_workspace  $base02 $base02    $yellow
     active_workspace   $base02 $base02    $base0
