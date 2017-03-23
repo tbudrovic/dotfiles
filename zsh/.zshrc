@@ -34,7 +34,16 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
+# pager settings
+export PAGER=less
+export LESS="-FXR"
+
+# colorize ls output
+eval "$(dircolors -b)"
+alias ls='ls -F --color=auto'
+
 # misc
+export EDITOR="emacsclient -c"
 export PATH=$PATH:~/bin:~/.gems/bin:~/node_modules/.bin
 export GEM_HOME=~/.gems
 
