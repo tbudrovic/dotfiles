@@ -93,7 +93,7 @@ rofi.fullscreen:	true
 rofi.padding:		300
 rofi.font:		Hack 12
 rofi.hide-scrollbar:	true
-rofi.line-margin:	15
+rofi.line-margin:	10
 rofi.eh:		1
 rofi.bw:		0
 rofi.terminal:          urxvtc
