@@ -1,7 +1,4 @@
-# Set up the prompt
-autoload -Uz promptinit
-promptinit
-prompt adam2
+export TERM="rxvt-unicode-256color"
 
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
@@ -42,9 +39,17 @@ export LESS="-FXR"
 eval "$(dircolors -b)"
 alias ls='ls -F --color=auto'
 
-# misc
+# enviroment
 export EDITOR="emacsclient -c"
 export PATH=$PATH:~/bin:~/.gems/bin:~/node_modules/.bin
 export GEM_HOME=~/.gems
+
+# powerlevel9k
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir ssh vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs dir_writable)
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+POWERLEVEL9K_VI_INSERT_MODE_STRING="I"
+POWERLEVEL9K_VI_COMMAND_MODE_STRING="C"
+source ~/dotfiles/powerlevel9k/powerlevel9k.zsh-theme
 
 /usr/games/fortune
