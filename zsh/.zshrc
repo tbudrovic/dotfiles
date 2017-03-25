@@ -47,11 +47,11 @@ export PATH=$PATH:~/bin:~/.gems/bin:~/node_modules/.bin
 export GEM_HOME=~/.gems
 
 # powerlevel9k
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir ssh vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vi_mode context dir ssh vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs dir_writable)
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_VI_INSERT_MODE_STRING="I"
-POWERLEVEL9K_VI_COMMAND_MODE_STRING="C"
+POWERLEVEL9K_VI_INSERT_MODE_STRING='\uf040'
+POWERLEVEL9K_VI_COMMAND_MODE_STRING='\ue20f'
 source ~/dotfiles/powerlevel9k/powerlevel9k.zsh-theme
 
 /usr/games/fortune
