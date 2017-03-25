@@ -54,4 +54,8 @@ POWERLEVEL9K_VI_INSERT_MODE_STRING='\uf040'
 POWERLEVEL9K_VI_COMMAND_MODE_STRING='\ue20f'
 source ~/dotfiles/powerlevel9k/powerlevel9k.zsh-theme
 
+# zsh-syntax-highlighting
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 /usr/games/fortune
