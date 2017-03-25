@@ -1,7 +1,9 @@
 export TERM="rxvt-unicode-256color"
 
-# Use emacs keybindings even if our EDITOR is set to vi
-bindkey -e
+# key bindings and zle settings
+bindkey -v
+bindkey -M viins '^r' history-incremental-search-backward
+bindkey -M vicmd '^r' history-incremental-search-backward
 
 # history settings
 setopt histignorealldups sharehistory
