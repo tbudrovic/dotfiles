@@ -1,0 +1,4 @@
+[submodule "powerlevel9k"]
+	path = powerlevel9k
+	url = https://github.com/dritter/powerlevel9k.git
+	branch = async_all_the_segments
