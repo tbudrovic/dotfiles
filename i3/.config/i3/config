@@ -28,7 +28,7 @@ set $workspace9 "9:"
 
 set $mod Mod4
 
-font pango:Hack Bold 10
+font pango: SFNS Display 11
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -137,7 +137,7 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 # finds out, if available)
 
 bar {
-  font pango: Font Awesome 11, Hack 11
+  font pango: Font Awesome 11, SFNS Display 11
   status_command i3blocks -c ~/.config/i3/i3blocks.conf
   position top
 
