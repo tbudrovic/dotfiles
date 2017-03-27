@@ -1,8 +1,17 @@
-;; package managers
+;;; init.el --- starting point of Emacs configuration
+;;; Commentary:
+;;; this is here to silence flymake
 
-;;; code
+;;; Code:
+
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
+
 (require 'package)
 
+(setq-default use-package-always-ensure t)
 (setq package-archives nil)
 
 (add-to-list 'package-archives
@@ -12,10 +21,10 @@
 (package-initialize)
 
 ;;; load packages info if there is no cache
-(setq init-dir (file-name-directory (or load-file-name (buffer-file-name))))
-(unless (and (file-exists-p (concat init-dir "elpa/archives/gnu"))
-             (file-exists-p (concat init-dir "elpa/archives/melpa")))
-  (package-refresh-contents))
+(let 'init-dir (file-name-directory (or load-file-name (buffer-file-name)))
+     (unless (and (file-exists-p (concat init-dir "elpa/archives/gnu"))
+		  (file-exists-p (concat init-dir "elpa/archives/melpa")))
+       (package-refresh-contents)))
 
 (defun packages-install (&rest packages)
   "Install any missing packages.
@@ -57,7 +66,7 @@ PACKAGES list of packages to install"
  inhibit-startup-echo-area-message t
  initial-scratch-message "")
 
-(set-frame-font "Hack 10")
+(set-frame-font "Knack Nerd Font 10")
 
 ;; location of backup and temporary files
 (setq backup-directory-alist
@@ -74,47 +83,54 @@ PACKAGES list of packages to install"
 
 (show-paren-mode t)
 (electric-pair-mode t)
-(setq-default show-trailing-whitespace t)
-(setq-default fill-column 80)
-(setq-default c-subword-mode t)
-(global-subword-mode)
+(setq show-trailing-whitespace t)
+(setq fill-column 80)
+(global-subword-mode t)
+(setq-default indent-tabs-mode nil)
 
-(setq-default cursor-type 'box)
-(setq-default cursor-in-non-selected-windows 'bar)
+(setq cursor-type 'bar)
+(setq cursor-in-non-selected-windows 'outline)
+
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
 
 (setq kill-buffer-query-functions
   (remq 'process-kill-buffer-query-function
          kill-buffer-query-functions))
 
 ;;; keep quiet
-(defun my-bell-function ())
-
+(defun my-bell-function () "Do nothing.")
 (setq ring-bell-function 'my-bell-function)
 (setq visible-bell nil)
 
-(setq-default ido-enable-flex-matching t)
-(setq-default ido-everywhere t)
-(setq-default ido-create-new-buffer 'always)
-(ido-mode 1)
+
+;;; Packages configuration
+;;; init: before package loading
+;;; config: after package loading
+
+(require 'ido)
+(use-package ido
+  :config
+  (ido-mode)
+  (setq ido-enable-flex-matching t)
+  (setq ido-create-new-buffer 'always)
+  (ido-everywhere))
 
 (use-package which-key
-  :ensure t
   :config
   (which-key-mode))
 
 (use-package flycheck-pos-tip
-  :ensure t
-  :config
+  :init
   (global-flycheck-mode)
+  :config
   (flycheck-pos-tip-mode))
 
 (use-package org-bullets
-  :ensure t
   :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode t))))
 
 (use-package web-mode
-  :ensure t
   :mode "\\.erb\\'"
   :init
   (setq web-mode-markup-indent-offset 2)
@@ -123,88 +139,40 @@ PACKAGES list of packages to install"
   (setq web-mode-enable-auto-pairing nil))
 
 (use-package ruby-mode
-  :ensure t
   :mode ("Capfile" "Gemfile" "Rakefile" "\\.rake\\'" "\\.rb\\'")
-  :config
+  :init
   (setq ruby-deep-arglist t)
-  (setq ruby-deep-indent-paren nil)
-  (setq-default c-tab-always-indent nil))
-
+  (setq ruby-deep-indent-paren nil))
 
 (use-package evil
-  :ensure t
   :config
-  (evil-mode 1))
+  (evil-mode))
 
 (use-package linum-relative
-  :ensure t
   :config
   (setq linum-relative-current-symbol "")
-  (global-linum-mode t)
+  (global-linum-mode)
   (linum-relative-mode))
 
 (use-package ace-jump-mode
-  :ensure t
-  :config
-  (define-key global-map (kbd "C-c SPC") 'ace-jump-mode))
+  :bind ("C-c SPC" . ace-jump-mode))
 
-(use-package rust-mode
-  :ensure t)
+(use-package rust-mode)
 
 (use-package frames-only-mode
-  :ensure t
   :config
   (frames-only-mode))
 
-;; (use-package sr-speedbar
-;   :ensure t
-;;   :init
-;;   (setq speedbar-use-images nil)
-;;   (setq sr-speedbar-right-side nil)
-;;   :config
-;;   (sr-speedbar-open))
-
-(use-package solarized
-  :disabled t
-  :if (window-system)
-  :defer t
-  :init (load-theme 'solarized-dark 'no-confirm)
+(use-package solarized-theme
   :config
-  (progn
-    ;; As of 20140313: avoid underlining the modeline
-    (set-face-attribute 'mode-line nil :underline nil)
-    (set-face-attribute 'mode-line-inactive nil :underline nil)
+  (setq solarized-distinct-fringe-background t)
+  (setq solarized-use-variable-pitch nil)
+  (setq solarized-high-contrast-mode-line t)
+  (setq solarized-emphasize-indicators nil)
+  (setq solarized-scale-org-headlines nil)
+  (load-theme 'solarized-dark 'no-confirm))
 
-    ;; Nicer trailing whitespace indication
-    (set-face-attribute 'trailing-whitespace nil
-			:background
-			(face-attribute 'warning :foreground)))
-
-  ;; Fix solarized linum background
-  (add-hook 'linum-before-numbering-hook
-	    (lambda ()
-	      (set-face-attribute
-	       'linum nil :background
-	       (face-attribute 'header-line  :background)))))
 
 (provide 'init)
 
 ;;; init.el ends here
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
- '(package-selected-packages
-   (quote
-    (ace-jump-mode which-key use-package frames-only-mode rust-mode flycheck-ocaml web-mode spaceline sass-mode ruby-compilation rhtml-mode popup org-bullets log4e linum-relative jump js2-mode ht gntp flymake-jslint flymake-jshint flycheck-pos-tip evil))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
