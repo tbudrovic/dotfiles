@@ -1,9 +1,7 @@
 export TERM="rxvt-unicode-256color"
 
 # key bindings and zle settings
-bindkey -v
-bindkey -M viins '^r' history-incremental-search-backward
-bindkey -M vicmd '^r' history-incremental-search-backward
+bindkey -e
 
 # history settings
 setopt histignorealldups sharehistory
