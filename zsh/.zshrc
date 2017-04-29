@@ -51,6 +51,7 @@ export PATH=$PATH:~/bin:~/.gems/bin:~/node_modules/.bin
 export GEM_HOME=~/.gems
 
 # powerlevel9k
+POWERLEVEL9K_MODE='nerdfont-complete'
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vi_mode context dir ssh vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs dir_writable)
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
