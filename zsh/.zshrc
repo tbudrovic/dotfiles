@@ -57,6 +57,7 @@ POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs ssh dir_writable root_indicat
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(history time status background_jobs)
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+POWERLEVEL9K_GENERATOR="async"
 source ~/dotfiles/powerlevel9k/powerlevel9k.zsh-theme
 
 # zsh-syntax-highlighting
