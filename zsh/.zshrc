@@ -52,8 +52,9 @@ export GEM_HOME=~/.gems
 
 # powerlevel9k
 POWERLEVEL9K_MODE='nerdfont-complete'
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vi_mode context dir ssh vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs dir_writable)
+POWERLEVEL9K_HISTORY_FOREGROUND='yellow'
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs ssh dir_writable root_indicator)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(history time status background_jobs)
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 POWERLEVEL9K_VI_INSERT_MODE_STRING='\uf040'
