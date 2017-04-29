@@ -1,6 +1,6 @@
 xrdb -load -merge .Xresources
 urxvtd -q -o -f
-xsetkbmap -option caps:none
+setxkbmap -option caps:none
 xmodmap ~/.Xmodmap
 xsetroot -cursor_name left_ptr
 xset -b
