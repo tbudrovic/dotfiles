@@ -74,12 +74,13 @@
 *color7:                S_base2
 *color15:               S_base3
 
-Xft.autohint:           false
+Xft.autohint:           0
 Xft.lcdfilter:          lcddefault
 Xft.hintstyle:          hintslight
-Xft.hinting:            true
-Xft.antialias:          true
+Xft.hinting:            1
+Xft.antialias:          1
 Xft.rgba:               rgb
+Xft.dpi:                96
 
 URxvt*depth:		32
 URxvt*scrollBar:	false
