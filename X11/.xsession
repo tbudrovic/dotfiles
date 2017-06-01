@@ -6,5 +6,5 @@ xsetroot -cursor_name left_ptr
 xset -b
 emacs --daemon
 compton -b
-feh --bg-scale 1964-11.jpg
+feh --bg-scale MVlfHG1.jpg
 exec i3
