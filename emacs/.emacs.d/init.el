@@ -63,9 +63,7 @@
 
 (setq-default
  indent-tabs-mode nil
- bidi-display-reordering nil)
-
-(setq
+ bidi-display-reordering nil
  show-trailing-whitespace t
  fill-column 75
  require-final-newline t
