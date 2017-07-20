@@ -47,7 +47,7 @@ export LESS="-FXR"
 
 # enviroment
 export EDITOR="emacsclient -c"
-export PATH=$PATH:~/bin:~/.gems/bin:~/node_modules/.bin
+export PATH=~/bin:~/.gems/bin:~/node_modules/.bin:$PATH
 export GEM_HOME=~/.gems
 
 # powerlevel9k
