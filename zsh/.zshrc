@@ -15,7 +15,7 @@ HISTFILE=~/.zsh_history
 
 # colorize ls output
 eval "$(dircolors -b)"
-alias ls='ls -F -h --color=auto'
+alias ls='ls -F --color=auto'
 
 # autocompletion settings
 autoload -Uz compinit && compinit
