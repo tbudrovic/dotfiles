@@ -104,6 +104,10 @@
 ; init: before package loading
 ; config: after package loading
 
+(use-package eldoc
+  :config
+  (global-eldoc-mode t))
+
 (use-package ivy
   :ensure t
   :diminish (ivy-mode . "")
@@ -211,11 +215,29 @@
   (setq solarized-scale-org-headlines nil)
   (load-theme 'solarized-dark 'no-confirm))
 
+(use-package python
+  :mode
+  ("\\.py\\'" . python-mode)
+  :config
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+  (setq python-shell-interpreter "ipython3"))
+
+(use-package company-anaconda
+  :defer t
+  :config
+  (add-to-list 'company-backends 'company-anaconda))
+
+(use-package anaconda-mode
+  :defer t
+  :diminish anaconda-mode
+  :diminish anaconda-eldoc-mode
+  :config
+  (add-to-list 'evil-emacs-state-modes 'anaconda-mode-view-mode))
 
 (provide 'init)
 
 ;;; init.el ends here
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
