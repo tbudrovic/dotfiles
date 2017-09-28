@@ -104,12 +104,20 @@
 ; init: before package loading
 ; config: after package loading
 
-(use-package helm
-  :config
-  (helm-mode 1)
+(use-package ivy
+  :ensure t
+  :diminish (ivy-mode . "")
   :bind
-  (("M-x" . helm-M-x)
-   ("C-x C-f" . helm-find-files)))
+  (("C-s" . swiper)
+  ("C-c g" . counsel-git)
+  ("C-c a" . counsel-ag))
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-height 16)
+  (setq ivy-count-format "")
+  (setq ivy-initial-inputs-alist nil)
+  (setq ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
 
 (use-package which-key
   :config
@@ -162,9 +170,7 @@
   (global-company-mode)
   (setq company-minimum-prefix-length 4)
   (global-unset-key (kbd "M-/"))
-  (define-key company-mode-map (kbd "C-;") 'helm-company)
   (define-key company-mode-map (kbd "M-/") 'company-complete)
-  (define-key company-active-map (kbd "C-;") 'helm-company)
   (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
   (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort))
 
@@ -194,7 +200,7 @@
 
 (use-package rtags
   :config
-  (setq rtags-display-result-backend 'helm))
+  (setq rtags-display-result-backend 'ivy))
 
 (use-package solarized-theme
   :config
