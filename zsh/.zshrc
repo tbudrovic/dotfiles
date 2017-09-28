@@ -3,6 +3,10 @@ export TERM="rxvt-unicode-256color"
 # key bindings and zle settings
 bindkey -e
 
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
+
 # history settings
 setopt histignorealldups sharehistory
 HISTSIZE=10000
