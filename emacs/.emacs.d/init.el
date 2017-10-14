@@ -238,6 +238,14 @@
   :config
   (add-to-list 'evil-emacs-state-modes 'anaconda-mode-view-mode))
 
+(use-package cmake-mode
+  :mode
+  ("CMakeLists.txt" "\\.cmake\\'"))
+
+(use-package projectile
+  :config
+  (add-hook 'projectile-mode-hook 'counsel-projectile-on))
+
 (provide 'init)
 
 ;;; init.el ends here
@@ -250,7 +258,7 @@
  '(org-agenda-files (quote ("~/gtd.org")))
  '(package-selected-packages
    (quote
-    (company-rtags flycheck-rtags helm-rtags rtags flycheck-ledger ledger-mode helm-company company-irony company-irony-c-headers company async flycheck-irony irony-eldoc irony irony-mode auto-complete geiser solarized-theme which-key use-package frames-only-mode flycheck-ocaml web-mode spaceline sass-mode ruby-compilation rhtml-mode popup org-bullets log4e linum-relative jump js2-mode ht gntp flycheck-pos-tip evil))))
+    (0blayout counsel counsel-projectile projectile cmake-font-lock cmake-mode anaconda-mode anaconda company-anaconda company-rtags flycheck-rtags rtags flycheck-ledger ledger-mode company-irony company-irony-c-headers company async flycheck-irony irony-eldoc irony irony-mode geiser solarized-theme which-key use-package frames-only-mode flycheck-ocaml web-mode spaceline sass-mode ruby-compilation rhtml-mode popup org-bullets log4e linum-relative jump js2-mode ht gntp flycheck-pos-tip evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
