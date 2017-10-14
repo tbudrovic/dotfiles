@@ -108,7 +108,7 @@
   (global-eldoc-mode t))
 
 (use-package ivy
-  :ensure t
+  :demand t
   :diminish (ivy-mode . "")
   :bind
   (("C-s" . swiper)
@@ -125,13 +125,6 @@
 (use-package which-key
   :config
   (which-key-mode))
-
-(use-package flycheck-pos-tip
-  :init
-  (global-flycheck-mode)
-  :config
-  (eval-after-load 'flycheck
-    (flycheck-pos-tip-mode)))
 
 (use-package org-bullets
   :config
@@ -179,10 +172,10 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort))
 
 (use-package irony
+  :defer t
   :config
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
 
   (defun my-irony-mode-hook ()
     (define-key irony-mode-map [remap completion-at-point]
@@ -194,15 +187,25 @@
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
 (use-package irony-eldoc
-  :config
+  :defer t
+  :init
   (eval-after-load 'irony-mode
     (add-hook 'irony-mode-hook 'irony-eldoc)))
 
 (use-package flycheck
+  :diminish flycheck-mode
   :config
-  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
+  (global-flycheck-mode))
+
+(use-package flycheck-pos-tip
+  :defer t
+  :init
+  (eval-after-load 'flycheck
+    (flycheck-pos-tip-mode)))
 
 (use-package rtags
+  :defer t
   :config
   (setq rtags-display-result-backend 'ivy))
 
