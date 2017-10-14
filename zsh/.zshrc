@@ -46,13 +46,13 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX + $#SU
 zstyle ':completion::approximate*:*' prefix-needed false
 
 # pager settings
-export PAGER=less
+export PAGER="less"
 export LESS="-FXR"
 
 # enviroment
 export EDITOR="emacsclient -c"
-export PATH=~/bin:~/.gems/bin:~/node_modules/.bin:$PATH
-export GEM_HOME=~/.gems
+export PATH="${HOME}/bin:${HOME}/.gems/bin:${HOME}/node_modules/.bin:${PATH}"
+export GEM_HOME="${HOME}/.gems"
 
 # powerlevel9k
 POWERLEVEL9K_MODE='nerdfont-complete'
