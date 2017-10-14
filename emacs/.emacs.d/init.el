@@ -7,9 +7,8 @@
 (setq-default tls-checktrust t)
 (let '(trustfile "/etc/ssl/certs/ca-certificates.crt")
   (setq-default tls-program
-		(list
-		 (format "gnutls-cli --x509-cafile %s -p %%p %%h"
-			 trustfile)))
+                '(format "gnutls-cli --x509-cafile %s -p %%p %%h"
+                         trustfile))
   (setq-default gnutls-verify-error t)
   (setq-default gnutls-trustfiles (list trustfile)))
 
@@ -113,15 +112,15 @@
   :diminish (ivy-mode . "")
   :bind
   (("C-s" . swiper)
-  ("C-c g" . counsel-git)
-  ("C-c a" . counsel-ag))
+   ("C-c g" . counsel-git)
+   ("C-c a" . counsel-ag))
   :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-height 16)
-  (setq ivy-count-format "")
-  (setq ivy-initial-inputs-alist nil)
-  (setq ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
+  (ivy-mode)
+  (setq ivy-use-virtual-buffers t
+        ivy-height 16
+        ivy-count-format "%d/%d"
+        ivy-initial-inputs-alist nil
+        ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
 
 (use-package which-key
   :config
@@ -169,6 +168,7 @@
 (use-package geiser)
 
 (use-package company
+  :diminish company-mode
   :config
   (add-to-list 'company-backends 'company-irony)
   (global-company-mode)
