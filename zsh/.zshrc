@@ -48,6 +48,8 @@ zstyle ':completion::approximate*:*' prefix-needed false
 # pager settings
 export PAGER="less"
 export LESS="-FXR"
+export TIME_STYLE="long-iso"
+export BLOCK_SIZE="'1"
 
 # enviroment
 export EDITOR="emacsclient -c"
