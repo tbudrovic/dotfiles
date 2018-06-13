@@ -1,6 +1,6 @@
 ;;; init.el --- starting point of Emacs configuration
 ;;; Commentary:
-;;; this is here to silence flymake
+;;; this is here to silence flycheck
 
 ;;; Code:
 
@@ -12,21 +12,20 @@
   (setq-default gnutls-verify-error t)
   (setq-default gnutls-trustfiles (list trustfile)))
 
-(setq package-archives nil)
-(add-to-list 'package-archives
-	     '("gnu" . "https://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/") t)
-
+(require 'package)
+(setq package-enable-at-startup nil)
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")
+        ("org" . "https://orgmode.org/elpa/")))
 (package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-(package-install-selected-packages)
 
-(eval-when-compile
-  (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package)
+  (package-install 'diminish))
+
+(require 'use-package)
 (setq-default use-package-always-ensure t)
 
 (menu-bar-mode -1)
@@ -41,16 +40,17 @@
  inhibit-startup-echo-area-message t
  initial-scratch-message "")
 
-(set-frame-font "Knack Nerd Font 10")
+;;(set-frame-font "-unknown-Hack Nerd Font Mono-normal-normal-normal-*-14-*-*-*-*-0-iso10646-1" t)
 
 ;; backup and temp files settings
-(setq backup-by-copying t
-      version-control t
-      kept-old-versions 2
-      kept-new-versions 6
-      delete-old-versions t)
-(setq backup-directory-alist
-      `(("." . ,temporary-file-directory)))
+(setq
+ backup-by-copying t
+ version-control t
+ kept-old-versions 2
+ kept-new-versions 6
+ delete-old-versions t
+ backup-directory-alist
+ `(("." . ,temporary-file-directory)))
 (setq-default tramp-backup-directory-alist backup-directory-alist)
 
 ;; reduce the frequency of garbage collection by making it happen on
@@ -60,6 +60,7 @@
 ;; warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
 
+;; misc settings
 (setq-default
  indent-tabs-mode nil
  bidi-display-reordering nil
@@ -71,11 +72,14 @@
  cursor-type 'bar
  cursor-in-non-selected-windows 'outline)
 
+;; built-in modes settings
 (global-subword-mode t)
 (global-hl-line-mode t)
+(global-eldoc-mode t)
 (column-number-mode t)
 (show-paren-mode t)
 (electric-pair-mode t)
+(setq vc-handled-backends nil)
 
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
@@ -103,46 +107,34 @@
 ; init: before package loading
 ; config: after package loading
 
-(use-package eldoc
-  :config
-  (global-eldoc-mode t))
+(use-package ag)
 
 (use-package ivy
-  :demand t
-  :diminish (ivy-mode . "")
-  :bind
-  (("C-s" . swiper)
-   ("C-c g" . counsel-git)
-   ("C-c a" . counsel-ag))
+  :diminish (ivy-mode)
   :config
   (ivy-mode)
   (setq ivy-use-virtual-buffers t
-        ivy-height 16
-        ivy-count-format "%d/%d"
+        ivy-height 20
+        ivy-count-format "%d/%d "
         ivy-initial-inputs-alist nil
         ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
+
+(use-package swiper
+  :bind
+  ("C-s" . swiper))
+
+(use-package counsel
+  :demand t
+  :diminish (counsel-mode)
+  :config
+  (counsel-mode))
+  ;; :bind
+  ;; ("C-; g f" . counsel-git)
+  ;; ("C-; a" . counsel-ag))
 
 (use-package which-key
   :config
   (which-key-mode))
-
-(use-package org-bullets
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode t))))
-
-(use-package web-mode
-  :mode "\\.erb\\'"
-  :init
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-enable-auto-pairing nil))
-
-(use-package ruby-mode
-  :mode ("Capfile" "Gemfile" "Rakefile" "\\.rake\\'" "\\.rb\\'")
-  :init
-  (setq ruby-deep-arglist t)
-  (setq ruby-deep-indent-paren nil))
 
 (use-package evil
   :config
@@ -154,111 +146,88 @@
   (global-linum-mode)
   (linum-relative-mode))
 
-(use-package frames-only-mode
-  :config
-  (frames-only-mode))
-
 (use-package geiser)
 
 (use-package company
-  :diminish company-mode
+  :demand t
+  :diminish (company-mode)
   :config
-  (add-to-list 'company-backends 'company-irony)
-  (global-company-mode)
   (setq company-minimum-prefix-length 4)
-  (global-unset-key (kbd "M-/"))
-  (define-key company-mode-map (kbd "M-/") 'company-complete)
-  (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort))
-
-(use-package irony
-  :defer t
-  :config
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-
-(use-package irony-eldoc
-  :defer t
-  :init
-  (eval-after-load 'irony-mode
-    (add-hook 'irony-mode-hook 'irony-eldoc)))
+  (global-company-mode)
+  :bind (("M-/" . company-complete)
+         :map company-active-map
+         ("C-n" . company-select-next-or-abort)
+         ("C-p" . company-select-previous-or-abort)))
 
 (use-package flycheck
-  :diminish flycheck-mode
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
-  (global-flycheck-mode))
+  :diminish (flycheck-mode)
+  :config (global-flycheck-mode))
 
 (use-package flycheck-pos-tip
-  :defer t
-  :init
-  (eval-after-load 'flycheck
-    (flycheck-pos-tip-mode)))
+  :after (flycheck)
+  :config (flycheck-pos-tip-mode))
 
-(use-package rtags
-  :defer t
-  :config
-  (setq rtags-display-result-backend 'ivy))
-
-(use-package solarized-theme
-  :config
-  (setq solarized-distinct-fringe-background t)
-  (setq solarized-use-variable-pitch nil)
-  (setq solarized-high-contrast-mode-line t)
-  (setq solarized-emphasize-indicators nil)
-  (setq solarized-scale-org-headlines nil)
-  (load-theme 'solarized-dark 'no-confirm))
+(use-package nord-theme
+  :config (load-theme 'nord 'no-confirm))
 
 (use-package python
-  :mode
-  ("\\.py\\'" . python-mode)
-  :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-  (setq python-shell-interpreter "ipython3"))
-
-(use-package company-anaconda
-  :defer t
-  :config
-  (add-to-list 'company-backends 'company-anaconda))
-
-(use-package anaconda-mode
-  :defer t
-  :diminish anaconda-mode
-  :diminish anaconda-eldoc-mode
-  :config
-  (add-to-list 'evil-emacs-state-modes 'anaconda-mode-view-mode))
+  :commands (python-mode)
+  :mode ("\\.py\\'" . python-mode)
+  :config (setq python-shell-interpreter "python3"))
 
 (use-package cmake-mode
-  :mode
-  ("CMakeLists.txt" "\\.cmake\\'"))
+  :defer t)
 
 (use-package projectile
-  :config
-  (add-hook 'projectile-mode-hook 'counsel-projectile-on))
+  :bind-keymap
+  ("C-; p" . projectile-command-map))
+
+(use-package magit
+  :bind
+  ("C-; g s" . magit-status))
+
+(use-package org-plus-contrib
+  :commands (org-mode org-agenda)
+  :bind ("C-; o a" . org-agenda)
+  :defines (org-agenda-files)
+  :init (setq org-agenda-files '("~/win/plans/")))
+
+(use-package org-bullets
+  :after (org-mode)
+  :config (add-hook 'org-mode-hook (lambda () (org-bullets-mode t))))
+
+(use-package ledger-mode
+  :defer t)
+
+(use-package flycheck-ledger
+  :after (ledger-mode))
+
+(use-package lsp-mode
+  :defer t)
+
+(use-package lsp-ui
+  :after (lsp-mode)
+  :config (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(use-package company-lsp
+  :after (lsp-mode)
+  :config (push 'company-lsp company-backends))
+
+(use-package lsp-python
+  :after (python)
+  :config (add-hook 'python-mode-hook 'lsp-python-enable))
 
 (provide 'init)
 
 ;;; init.el ends here
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("~/gtd.org")))
  '(package-selected-packages
    (quote
-    (0blayout counsel counsel-projectile projectile cmake-font-lock cmake-mode anaconda-mode anaconda company-anaconda company-rtags flycheck-rtags rtags flycheck-ledger ledger-mode company-irony company-irony-c-headers company async flycheck-irony irony-eldoc irony irony-mode geiser solarized-theme which-key use-package frames-only-mode flycheck-ocaml web-mode spaceline sass-mode ruby-compilation rhtml-mode popup org-bullets log4e linum-relative jump js2-mode ht gntp flycheck-pos-tip evil))))
+    (ag apel w3m which-key use-package projectile org-plus-contrib org-bullets nord-theme magit lsp-ui lsp-python linum-relative ledger-mode geiser frames-only-mode flycheck-pos-tip flycheck-ledger evil diminish counsel company-lsp cmake-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
