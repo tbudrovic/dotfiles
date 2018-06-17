@@ -217,6 +217,45 @@
   :after (python)
   :config (add-hook 'python-mode-hook 'lsp-python-enable))
 
+(use-package mu4e
+  :load-path "/usr/share/emacs/site-lisp/mu4e"
+  :defines
+  (mu4e-compose-format-flowed
+   mu4e-compose-in-new-frame
+   mu4e-maildir
+   mu4e-headers-date-format
+   mu4e-view-show-addresses
+   mu4e-headers-include-related
+   mu4e-sent-messages-behavior
+   mu4e-html2text-command
+   mu4e-sent-folder
+   mu4e-drafts-folder
+   mu4e-trash-folder
+   mu4e-refile-folder
+   mu4e-user-email-address-list
+   mu4e-get-mail-command)
+  :config
+  (setq
+   mu4e-compose-format-flowed t
+   mu4e-compose-in-new-frame t
+   mu4e-maildir "~/Mail"
+   mu4e-headers-date-format "%Y-%m-%d %H:%M"
+   mu4e-view-show-addresses t
+   message-kill-buffer-on-exit t
+   mu4e-headers-include-related t
+   mu4e-sent-messages-behavior 'delete
+   mu4e-html2text-command "html2text"
+   mu4e-sent-folder   "/Sent"
+   mu4e-drafts-folder "/Drafts"
+   mu4e-trash-folder  "/Trash"
+   mu4e-refile-folder "/Archive"
+   mu4e-user-email-address-list '("")
+   mu4e-get-mail-command "offlineimap -o"
+   message-send-mail-function 'message-send-mail-with-sendmail
+   user-mail-address ""
+   user-full-name ""))
+
+
 (provide 'init)
 
 ;;; init.el ends here
@@ -227,7 +266,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ag apel w3m which-key use-package projectile org-plus-contrib org-bullets nord-theme magit lsp-ui lsp-python linum-relative ledger-mode geiser frames-only-mode flycheck-pos-tip flycheck-ledger evil diminish counsel company-lsp cmake-mode))))
+    (mu4e ag apel w3m which-key use-package projectile org-plus-contrib org-bullets nord-theme magit lsp-ui lsp-python linum-relative ledger-mode geiser frames-only-mode flycheck-pos-tip flycheck-ledger evil diminish counsel company-lsp cmake-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
