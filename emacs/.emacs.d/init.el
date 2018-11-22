@@ -26,7 +26,7 @@
   (package-install 'diminish))
 
 (require 'use-package)
-(setq-default use-package-always-ensure t)
+(setq use-package-always-ensure t)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -61,7 +61,7 @@
 (setq large-file-warning-threshold 100000000)
 
 ;; misc settings
-(setq-default
+(setq
  indent-tabs-mode nil
  bidi-display-reordering nil
  show-trailing-whitespace t
@@ -89,8 +89,7 @@
          kill-buffer-query-functions))
 
 ;; keep quiet
-(defun my-bell-function () "Do nothing.")
-(setq ring-bell-function 'my-bell-function)
+(setq ring-bell-function (lambda () ()))
 (setq visible-bell nil)
 
 ;; enable commands disabled by default
@@ -103,9 +102,14 @@
 (put 'dired-find-alternate-file 'disabled nil) ; a in dired
 
 
-;; Packages configuration
+;; 3rd-party packages configuration
 ; init: before package loading
 ; config: after package loading
+
+(use-package cc-mode
+  :defer t
+  :config
+  (c-set-style "bsd"))
 
 (use-package ag)
 
@@ -116,6 +120,7 @@
   (setq ivy-use-virtual-buffers t
         ivy-height 20
         ivy-count-format "%d/%d "
+        ivy-display-style 'fancy
         ivy-initial-inputs-alist nil
         ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
 
@@ -179,6 +184,10 @@
   :defer t)
 
 (use-package projectile
+  :defines
+  (projectile-completion-system)
+  :config
+  (setq projectile-completion-system 'ivy)
   :bind-keymap
   ("C-; p" . projectile-command-map))
 
@@ -189,8 +198,12 @@
 (use-package org-plus-contrib
   :commands (org-mode org-agenda)
   :bind ("C-; o a" . org-agenda)
-  :defines (org-agenda-files)
-  :init (setq org-agenda-files '("~/win/plans/")))
+  :defines
+  (org-agenda-files
+   org-hide-leading-stars)
+  :init (setq org-agenda-files '("~/win/plans/"))
+  :config
+  (setq org-hide-leading-stars t))
 
 (use-package org-bullets
   :after (org-mode)
@@ -203,7 +216,15 @@
   :after (ledger-mode))
 
 (use-package lsp-mode
-  :defer t)
+  :defer t
+  :init
+  (projectile-mode t)
+  :config
+  (require 'lsp-imenu)
+  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+  (lsp-define-stdio-client lsp-python "python3"
+                           #'projectile-project-root
+                           '("pyls")))
 
 (use-package lsp-ui
   :after (lsp-mode)
@@ -241,7 +262,6 @@
    mu4e-maildir "~/Mail"
    mu4e-headers-date-format "%Y-%m-%d %H:%M"
    mu4e-view-show-addresses t
-   message-kill-buffer-on-exit t
    mu4e-headers-include-related t
    mu4e-sent-messages-behavior 'delete
    mu4e-html2text-command "html2text"
@@ -251,6 +271,7 @@
    mu4e-refile-folder "/Archive"
    mu4e-user-email-address-list '("")
    mu4e-get-mail-command "offlineimap -o"
+   message-kill-buffer-on-exit t
    message-send-mail-function 'message-send-mail-with-sendmail
    user-mail-address ""
    user-full-name ""))
@@ -266,7 +287,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (mu4e ag apel w3m which-key use-package projectile org-plus-contrib org-bullets nord-theme magit lsp-ui lsp-python linum-relative ledger-mode geiser frames-only-mode flycheck-pos-tip flycheck-ledger evil diminish counsel company-lsp cmake-mode))))
+    (solarized-theme rust-mode mu4e ag apel w3m which-key use-package projectile org-plus-contrib org-bullets nord-theme magit lsp-ui lsp-python linum-relative ledger-mode geiser frames-only-mode flycheck-pos-tip flycheck-ledger evil diminish counsel company-lsp cmake-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
